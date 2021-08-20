@@ -1,50 +1,49 @@
 {
-	"version": "2",
-	"templates": [
-		{
-			"title": "NextCloud",
-			"type": 2,
-			"categories": [
-				"Content Management",
-				"Document Libarary"
-			],
-			"description": "Your cloud under your control",
-			"logo": "https://nextcloud.com/wp-content/themes/next/assets/img/common/nextcloud-square-logo.png",
-			"platform": "linux",
-			"repository": {
-				"url": "https://github.com/OMGTheCloud/ARMCluster",
-				"stackfile": "apps/nextcloud/docker-compose.yml"
-			},
-			"env": [{
-					"name": "MYSQL_ROOT_PASSWORD",
-					"label": "Database root password",
-					"description": "Root password, you won't need this for normal use, make it secure!"
-				},
-				{
-					"name": "MYSQL_PASSWORD",
-					"label": "Database Password",
-					"description": "Password your NextCloud instance will use to connect to its' database"
-				},
-				{
-					"name": "NC_USERNAME",
-					"label": "NextCloud default admin account name",
-					"description": "The initial admin account",
-					"default": "admin"
-				},
-				{
-					"name": "NC_PASSWORD",
-					"label": "Password",
-					"description": "Initial admin account password"
-				},
-				{
-					"name": "VIRTUAL_HOST",
-					"label": "NextCloud FQDN Hostname",
-					"description": "URL (without the https://) where NextCloud will operate",
-					"default": "nextcloud.mydomain.com"
-				}
-			
-			]
-		},
-	  
-	]
+  "version": "2",
+  "templates": [
+    {
+      "title": "NextCloud",
+      "type": 2,
+      "categories": [
+        "Content Management",
+        "Document Libarary"
+      ],
+      "description": "Your cloud under your control",
+      "logo": "https://nextcloud.com/wp-content/themes/next/assets/img/common/nextcloud-square-logo.png",
+      "platform": "linux",
+      "repository": {
+        "url": "https://github.com/OMGTheCloud/ARMCluster",
+        "stackfile": "apps/nextcloud/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "label": "Database root password",
+          "description": "Root password, you won't need this for normal use, make it secure!"
+        },
+        {
+          "name": "MYSQL_PASSWORD",
+          "label": "Database Password",
+          "description": "Password your NextCloud instance will use to connect to its' database"
+        },
+        {
+          "name": "NC_USERNAME",
+          "label": "NextCloud default admin account name",
+          "description": "The initial admin account",
+          "default": "admin"
+        },
+        {
+          "name": "NC_PASSWORD",
+          "label": "Password",
+          "description": "Initial admin account password"
+        },
+        {
+          "name": "VIRTUAL_HOST",
+          "label": "NextCloud FQDN Hostname",
+          "description": "URL (without the https://) where NextCloud will operate",
+          "default": "nextcloud.mydomain.com"
+        }
+      ]
+    }
+  ]
 }
