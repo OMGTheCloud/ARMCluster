@@ -55,6 +55,10 @@ services:
 
     environment:
       - TZ=America/Phoenix
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
     volumes:
       - nextcloud-config:/config
       - nextcloud-data:/data
