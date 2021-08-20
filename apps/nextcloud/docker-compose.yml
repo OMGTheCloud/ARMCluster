@@ -1,0 +1,94 @@
+version: "3.6"
+
+volumes:
+  nextcloud-config:
+    external: true
+  nextcloud-data:
+    external: true
+  nextcloud-db:
+    external: true
+
+networks:
+  proxy:
+    external: true
+  nextcloud_db:
+    name: nextcloud_db
+
+services:
+  db:
+    image: mariadb
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    volumes:
+      - nextcloud-db:/var/lib/mysql
+    networks:
+      - nextcloud_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=SuperSecretPassword!
+      - MYSQL_PASSWORD=ChangetThisPWtoo!
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: linuxserver/nextcloud:version-20.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+      labels:
+        - 'traefik.http.routers.nextcloud.tls=true'
+        - 'traefik.http.routers.nextcloud.rule=Host(`nextcloud.arm.omgthecloud.com`)'
+        - 'traefik.http.routers.nextcloud.tls.certresolver=le'
+        - 'traefik.http.routers.nextcloud.entrypoints=websecured'
+        - 'traefik.http.services.nextcloud.loadbalancer.server.scheme=https'
+        - 'traefik.http.services.nextcloud.loadbalancer.server.port=443'
+
+    environment:
+      - TZ=America/Phoenix
+    volumes:
+      - nextcloud-config:/config
+      - nextcloud-data:/data
+    networks:
+      - proxy
+      - nextcloud_db
+
+  collabora:
+    image: "collabora/code:latest"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.collabora.tls=true'
+        - 'traefik.http.routers.collabora.rule=Host(`docs.arm.omgthecloud.com`)'
+        - 'traefik.http.services.collabora.loadbalancer.server.port=9980'
+
+    cap_add:
+      - MKNOD
+    environment:
+      - domain=nextcloud.arm.bishoptechnology.com
+      - username=admin
+      - password=SuperSecretPW!
+      - VIRTUAL_PORT=9980
+      - VIRTUAL_HOST=docs.arm.bishoptechnology.com
+      - extra_params=--o:ssl.enable=false --o:ssl.termination=true
+    networks:
+      - proxy
