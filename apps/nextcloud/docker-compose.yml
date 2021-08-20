@@ -85,7 +85,7 @@ services:
       - MKNOD
     environment:
       - domain=${VIRTUAL_HOST}
-      - username=admin
+      - username=${NC_USERNAME}
       - password=${NC_PASSWORD}
       - VIRTUAL_PORT=9980
       - VIRTUAL_HOST=${VIRTUAL_HOST}
