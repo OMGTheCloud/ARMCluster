@@ -2,11 +2,8 @@ version: "3.6"
 
 volumes:
   nextcloud-config:
-    external: true
   nextcloud-data:
-    external: true
   nextcloud-db:
-    external: true
 
 networks:
   proxy:
