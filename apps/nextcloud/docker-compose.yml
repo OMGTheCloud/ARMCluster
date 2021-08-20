@@ -34,7 +34,7 @@ services:
       - MYSQL_USER=nextcloud
 
   app:
-    image: linuxserver/nextcloud:version-20.0.0
+    image: linuxserver/nextcloud:arm64v8-latest
     deploy:
       mode: replicated
       replicas: 1
