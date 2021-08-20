@@ -31,8 +31,8 @@ services:
     networks:
       - nextcloud_db
     environment:
-      - MYSQL_ROOT_PASSWORD=SuperSecretPassword!
-      - MYSQL_PASSWORD=ChangetThisPWtoo!
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
 
@@ -49,7 +49,7 @@ services:
         delay: 5s
       labels:
         - 'traefik.http.routers.nextcloud.tls=true'
-        - 'traefik.http.routers.nextcloud.rule=Host(`nextcloud.arm.omgthecloud.com`)'
+        - 'traefik.http.routers.nextcloud.rule=Host(`${VIRTUAL_HOST}`)'
         - 'traefik.http.routers.nextcloud.tls.certresolver=le'
         - 'traefik.http.routers.nextcloud.entrypoints=websecured'
         - 'traefik.http.services.nextcloud.loadbalancer.server.scheme=https'
@@ -84,11 +84,11 @@ services:
     cap_add:
       - MKNOD
     environment:
-      - domain=nextcloud.arm.bishoptechnology.com
+      - domain=${VIRTUAL_HOST}
       - username=admin
-      - password=SuperSecretPW!
+      - password=${NC_PASSWORD}
       - VIRTUAL_PORT=9980
-      - VIRTUAL_HOST=docs.arm.bishoptechnology.com
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
       - extra_params=--o:ssl.enable=false --o:ssl.termination=true
     networks:
       - proxy
