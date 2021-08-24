@@ -41,9 +41,36 @@
           "name": "VIRTUAL_HOST",
           "label": "NextCloud FQDN Hostname",
           "description": "URL (without the https://) where NextCloud will operate",
-          "default": "nextcloud.mydomain.com"
+          "default": "nextcloud.arm.omgthecloud.com"
         }
       ]
-    }
+    },
+    {
+      "title": "FreqTrade",
+      "type": 2,
+      "categories": [
+        "cryptocurrency",
+        "trading"
+      ],
+      "description": "Open Source Crypto Trading Bot",
+      "logo": "https://www.freqtrade.io/en/stable/assets/freqtrade_poweredby.svg",
+      "platform": "linux",
+      "repository": {
+        "url": "https://github.com/OMGTheCloud/ARMCluster",
+        "stackfile": "apps/freqtrade/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "STRATEGY",
+          "label": "Strategy file name",
+        },
+        {
+          "name": "URL",
+          "label": "FreqTrade FQDN Hostname",
+          "description": "URL, without https://, where FreqTrade runs",
+          "default": "freqtrade.arm.omgthecloud.com"
+        }
+      ]
+    }  
   ]
 }
