@@ -62,7 +62,7 @@
       "env": [
         {
           "name": "STRATEGY",
-          "label": "Strategy file name",
+          "label": "Strategy file name"
         },
         {
           "name": "URL",
