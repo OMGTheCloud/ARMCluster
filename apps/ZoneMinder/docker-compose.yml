@@ -28,6 +28,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=zm
       - MYSQL_USER=zm
+      - TZ=America/Phoenix
 
   zoneminder:
     image: yaoa/zoneminder-base:latest
