@@ -6,20 +6,6 @@ networks:
     external: true
   zoneminder:
 
-volumes:
-  zoneminder-data:
-    driver: glusterfs
-    name: "gfs/zoneminder-data"
- zoneminder-config:
-    driver: glusterfs
-    name: "gfs/zoneminder-config"
- zoneminder-logs:
-    driver: glusterfs
-    name: "gfs/zoneminder-logs"
- zoneminder-db:
-    driver: glusterfs
-    name: "gfs/zoneminder-db"
-
 services:
   db:
     image: mariadb
@@ -36,7 +22,7 @@ services:
     networks:
       - zoneminder
     volumes:
-      - zoneminder-db/var/lib/mysql
+      - /mnt/glustervolume/zoneminder-db/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -64,9 +50,9 @@ services:
       - zoneminder
       - proxy
     volumes:
-      - zoneminder-data:/data
-      - zoneminder-config:/config
-      - zoneminder-logs:/log
+      - /mnt/glustervolume/zoneminder-data:/data
+      - /mnt/glustervolume/zoneminder-config:/config
+      - /mnt/glustervolume/zoneminder-logs:/log
       - type: tmpfs
         target: /dev/shm
         tmpfs:
