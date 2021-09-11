@@ -22,7 +22,7 @@ services:
     networks:
       - zoneminder
     volumes:
-      - /mnt/glustervolume/zoneminder-db/var/lib/mysql
+      - /mnt/glustervolume/zoneminder-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
