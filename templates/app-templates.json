@@ -100,7 +100,7 @@
       "description": "Linux based Security DVR",
       "logo": "https://wiki.koozali.org/images/thumb/c/c6/Zoneminder.png/300px-Zoneminder.png",
       "platform": "linux",
-      "repository":
+      "repository": {
         "url": "https://github.com/OMGTheCloud/ARMCluster",
         "stackfile": "apps/ZoneMinder/docker-compose.yml"
       },
