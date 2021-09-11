@@ -56,7 +56,7 @@ services:
         delay: 5s
       labels:
         - 'traefik.http.routers.zoneminder.tls=true'
-        - 'traefik.http.routers.zoneminder.rule=Host(`${VIRTUAL_HOST}`)'
+        - 'traefik.http.routers.zoneminder.rule=Host(`${SERVER_FQDN}`)'
         - 'traefik.http.services.zoneminder.loadbalancer.server.port=80'
     depends_on:
       - db
