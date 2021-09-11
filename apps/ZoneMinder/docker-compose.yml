@@ -72,14 +72,14 @@ services:
         tmpfs:
           size: 1000000000
     environment:
-      - ZM_SERVER_HOST=zoneminder
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_USER=mysqluser
-      - MYSQL_PASSWORD=mysqlpassword
+      - ZM_SERVER_HOST=zm
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=zm
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - TZ=America/Phoenix
       - MAX_LOG_SIZE_BYTES=1000000
       - MAX_LOG_NUMBER=20
-      - EMAIL_HOST=smtp.gmail.com
-      - EMAIL_PORT=587
-      - EMAIL_ADDRESS=zoneminder@omgthecloud.com
-      - EMAIL_PASSWORD=very_secure_password
+#      - EMAIL_HOST=smtp.gmail.com
+#      - EMAIL_PORT=587
+#      - EMAIL_ADDRESS=zoneminder@omgthecloud.com
+#      - EMAIL_PASSWORD=very_secure_password
