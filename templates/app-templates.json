@@ -91,6 +91,55 @@
       ]
     },
     {
+      "title": "ZoneMinder",
+      "type": 2,
+      "categories": [
+        "Security",
+        "NVR"
+      ],
+      "description": "Linux based Security DVR",
+      "logo": "https://wiki.koozali.org/images/thumb/c/c6/Zoneminder.png/300px-Zoneminder.png",
+      "platform": "linux",
+      "repository":
+        "url": "https://github.com/OMGTheCloud/ARMCluster",
+        "stackfile": "apps/ZoneMinder/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "SERVER_FQDN",
+          "label": "Server FQDN",
+          "description": "Fully-qualified namespace where you will host ZoneMinder",
+          "default": "zm.arm.omgthecloud.com"
+        },
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "label": "Database root password",
+          "description": "Root password, you won't need this for normal use, make it secure!"
+        },
+        {
+          "name": "MYSQL_PASSWORD",
+          "label": "Database Password",
+          "description": "Password your ZoneMinder instance will use to connect to its' database"
+        },
+        {
+          "name": "SMTP_DOMAIN",
+          "label": "SMTP Domain",
+          "description": "Domain you are using in AWS SES. Must be verified!",
+          "default": "yourdomain.com"
+        },
+        {
+          "name": "SMTP_USERNAME",
+          "label": "AWS SES UserID",
+          "description": "AWS IAM account with permissions to send in SES"
+        },
+        {
+          "name": "SMTP_PASSWORD",
+          "label": "AWS SES Password",
+          "description": "IAM secret for sending via AWS SES"
+        }
+      ]
+    },
+    {
       "title": "FreqTrade",
       "type": 2,
       "categories": [
