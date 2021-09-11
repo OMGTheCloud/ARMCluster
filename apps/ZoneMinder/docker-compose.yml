@@ -38,9 +38,10 @@ services:
     volumes:
       - zoneminder-db/var/lib/mysql
     environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=zm
-    env_file:
-      - ./.env
+      - MYSQL_USER=zm
 
   zoneminder:
     image: yaoa/zoneminder-base:latest
