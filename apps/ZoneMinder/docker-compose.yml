@@ -1,6 +1,25 @@
 
 version: '3'
 
+networks:
+  proxy:
+    external: true
+  zoneminder:
+
+volumes:
+  zoneminder-data:
+    driver: glusterfs
+    name: "gfs/zoneminder-data"
+ zoneminder-config:
+    driver: glusterfs
+    name: "gfs/zoneminder-config"
+ zoneminder-logs:
+    driver: glusterfs
+    name: "gfs/zoneminder-logs"
+ zoneminder-db:
+    driver: glusterfs
+    name: "gfs/zoneminder-db"
+
 services:
   db:
     image: mariadb
@@ -8,26 +27,25 @@ services:
     networks:
       - zoneminder
     volumes:
-      - ./zm/db:/var/lib/mysql
+      - zoneminder-db/var/lib/mysql
     environment:
       - MYSQL_DATABASE=zm
     env_file:
       - ./.env
 
   zoneminder:
-    image: ghcr.io/zoneminder-containers/zoneminder-base:latest
+    image: yaoa/zoneminder-base:latest
     restart: always
     stop_grace_period: 45s
     depends_on:
       - db
-    ports:
-      - 80:80
     networks:
       - zoneminder
+      - proxy
     volumes:
-      - /data:/data
-      - ./zm/config:/config
-      - ./zm/log:/log
+      - zoneminder-data:/data
+      - zoneminder-config:/config
+      - zoneminder-logs:/log
       - type: tmpfs
         target: /dev/shm
         tmpfs:
@@ -35,8 +53,14 @@ services:
     env_file:
       - ./.env
 #    environment:
-#      - ZM_SERVER_HOST=zoneminder1
-
-
-networks:
-  zoneminder:
+#      - ZM_SERVER_HOST=zoneminder
+       - MYSQL_ROOT_PASSWORD=rootpassword
+       - MYSQL_USER=mysqluser
+       - MYSQL_PASSWORD=mysqlpassword
+       - TZ=America/Phoenix
+       - MAX_LOG_SIZE_BYTES=1000000
+       - MAX_LOG_NUMBER=20
+       - EMAIL_HOST=smtp.gmail.com
+       - EMAIL_PORT=587
+       - EMAIL_ADDRESS=zoneminder@omgthecloud.com
+       - EMAIL_PASSWORD=very_secure_password
