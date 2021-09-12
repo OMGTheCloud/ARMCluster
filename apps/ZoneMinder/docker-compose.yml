@@ -2,17 +2,11 @@
 version: '3.7'
 
 volumes:
-  zoneminder-config:
-    driver: glusterfs
-    name: "gfs/zoneminder-config"
   zoneminder-data:
     driver_opts:
       type: nfs
       o: addr=rockpiNAS,nolock,soft,rw
       device: :/export/DockerNFS/docker-volumes/zoneminder-data
-  zoneminder-log:
-    driver: glusterfs
-    name: "gfs/zoneminder-log"
   zoneminder-db:
     driver_opts:
       type: nfs
@@ -72,8 +66,8 @@ services:
       - "8099:80"
     volumes:
       - zoneminder-data:/data
-      - zoneminder-config:/config
-      - zoneminder-log:/log
+      - /mnt/glustervolume/zoneminder-config:/config
+      - /mnt/glustervolume/zoneminder-log:/log
 #      - type: tmpfs
 #        target: /dev/shm
 #        tmpfs:
