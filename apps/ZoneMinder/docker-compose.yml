@@ -43,7 +43,7 @@ services:
       - TZ=America/Phoenix
 
   zoneminder:
-    image: yaoa/zoneminder-base:latest
+    image: ghcr.io/zoneminder-containers/zoneminder-base:latest
     deploy:
       mode: replicated
       replicas: 1
