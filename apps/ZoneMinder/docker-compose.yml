@@ -6,14 +6,18 @@ volumes:
     driver: glusterfs
     name: "gfs/zoneminder-config"
   zoneminder-data:
-    driver: glusterfs
-    name: "gfs/zoneminder-data"
+    driver_opts:
+      type: nfs
+      o: addr=rockpiNAS,nolock,soft,rw
+      device: :/export/DockerNFS/docker-volumes/zoneminder-data
   zoneminder-log:
     driver: glusterfs
     name: "gfs/zoneminder-log"
   zoneminder-db:
-    driver: glusterfs
-    name: "gfs/zoneminder-db"
+    driver_opts:
+      type: nfs
+      o: addr=rockpiNAS,nolock,soft,rw
+      device: :/export/DockerNFS/docker-volumes/zoneminder-db
     
 networks:
   proxy:
