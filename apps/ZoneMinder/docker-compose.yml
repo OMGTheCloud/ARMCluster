@@ -1,6 +1,20 @@
 
 version: '3.7'
 
+volumes:
+  zoneminder-config:
+    driver: glusterfs
+    name: "gfs/zoneminder-config"
+  zoneminder-data:
+    driver: glusterfs
+    name: "gfs/zoneminder-data"
+  zoneminder-log:
+    driver: glusterfs
+    name: "gfs/zoneminder-log"
+  zoneminder-db:
+    driver: glusterfs
+    name: "gfs/zoneminder-db"
+    
 networks:
   proxy:
     external: true
@@ -22,7 +36,7 @@ services:
     networks:
       - zoneminder
     volumes:
-      - /mnt/glustervolume/zoneminder-db:/var/lib/mysql
+      - zoneminder-db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -50,14 +64,16 @@ services:
     networks:
       - zoneminder
       - proxy
+    ports:
+      - "8099:80"
     volumes:
-      - /mnt/glustervolume/zoneminder-data:/data
-      - /mnt/glustervolume/zoneminder-config:/config
-      - /mnt/glustervolume/zoneminder-logs:/log
-      - type: tmpfs
-        target: /dev/shm
-        tmpfs:
-          size: 1000000000
+      - zoneminder-data:/data
+      - zoneminder-config:/config
+      - zoneminder-log:/log
+#      - type: tmpfs
+#        target: /dev/shm
+#        tmpfs:
+#          size: 1000000000
     environment:
       - ZM_SERVER_HOST=zm
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
