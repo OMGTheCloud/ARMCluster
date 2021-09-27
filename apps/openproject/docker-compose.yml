@@ -4,6 +4,14 @@ networks:
   proxy:
     external: true
 
+volumes:
+  openproject-data:
+    driver: glusterfs
+    name: "gfs/openproject-data"
+  openproject-assets:
+    driver: glusterfs
+    name: "gfs/openproject-assets"
+    
 services:
   openproject:
     image: "fazenda/openproject:latest"
@@ -21,8 +29,8 @@ services:
         - 'traefik.http.routers.openproject.tls=true'
         - 'traefik.http.services.openproject.loadbalancer.server.port=80'
     volumes:
-      - /mnt/glustervolume/openproject-data:/var/openproject/pgdata
-      - /mnt/glustervolume/openproject-assets:/var/openproject/assets
+      - openproject-data:/var/openproject/pgdata
+      - openproject-assets:/var/openproject/assets
     networks:
       - proxy
 
