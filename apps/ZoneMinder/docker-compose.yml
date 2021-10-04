@@ -7,11 +7,17 @@ volumes:
       type: nfs
       o: addr=rockpiNAS,nolock,soft,rw
       device: :/export/DockerNFS/docker-volumes/zoneminder-data
+      
+  zoneminder-config:
+    driver: glusterfs
+    name: "gfs/zoneminder-config"
+    
+  zoneminder-log:
+    driver: glusterfs
+    name: "gfs/zoneminder-log"
+    
   zoneminder-db:
-    driver_opts:
-      type: nfs
-      o: addr=rockpiNAS,nolock,soft,rw
-      device: :/export/DockerNFS/docker-volumes/zoneminder-db
+    external: true
     
 networks:
   proxy:
@@ -27,7 +33,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == worker
+          - node.role != worker
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -66,10 +72,10 @@ services:
       - "8099:80"
     volumes:
       - zoneminder-data:/data
-      - /mnt/glustervolume/zoneminder-config:/config
-      - /mnt/glustervolume/zoneminder-log:/log
-#      - type: tmpfs
-#        target: /dev/shm
+      - zoneminder-config:/config
+      - zoneminder-log:/log
+      - type: tmpfs
+        target: /dev/shm
 #        tmpfs:
 #          size: 1000000000
     environment:
