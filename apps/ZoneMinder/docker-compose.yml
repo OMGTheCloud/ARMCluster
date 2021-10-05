@@ -119,10 +119,15 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+      labels:
+        - 'traefik.http.routers.zoneminder2.tls=true'
+        - 'traefik.http.routers.zoneminder2.rule=Host(`zm2.arm.omgthecloud.com`)'
+        - 'traefik.http.services.zoneminder2.loadbalancer.server.port=80'
     depends_on:
       - db
     networks:
       - zoneminder
+      - proxy
     volumes:
       - zoneminder-data:/data
       - zoneminder-config2:/config
@@ -132,7 +137,7 @@ services:
 #        tmpfs:
 #          size: 1000000000
     environment:
-      - ZM_SERVER_HOST=zoneminder2
+      - ZM_SERVER_HOST=zm2.arm.omgthecloud.com
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=zm
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -155,10 +160,15 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+     labels:
+       - 'traefik.http.routers.zoneminder3.tls=true'
+       - 'traefik.http.routers.zoneminder3.rule=Host(`zm3.arm.omgthecloud.com`)'
+       - 'traefik.http.services.zoneminder3.loadbalancer.server.port=80'
     depends_on:
       - db
     networks:
       - zoneminder
+      - proxy
     volumes:
       - zoneminder-data:/data
       - zoneminder-config3:/config
@@ -168,7 +178,7 @@ services:
 #        tmpfs:
 #          size: 1000000000
     environment:
-      - ZM_SERVER_HOST=zoneminder3
+      - ZM_SERVER_HOST=zm3.arm.omgthecloud.com
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=zm
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
