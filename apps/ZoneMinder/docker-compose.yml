@@ -34,7 +34,7 @@ volumes:
     driver: glusterfs
     name: "gfs/zoneminder-config3"
     
-  zoneminder-log1:
+  zoneminder-log3:
     driver: glusterfs
     name: "gfs/zoneminder-log3"
     
