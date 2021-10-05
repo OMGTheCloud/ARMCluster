@@ -160,10 +160,10 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
-     labels:
-       - 'traefik.http.routers.zoneminder3.tls=true'
-       - 'traefik.http.routers.zoneminder3.rule=Host(`zm3.arm.omgthecloud.com`)'
-       - 'traefik.http.services.zoneminder3.loadbalancer.server.port=80'
+      labels:
+        - 'traefik.http.routers.zoneminder3.tls=true'
+        - 'traefik.http.routers.zoneminder3.rule=Host(`zm3.arm.omgthecloud.com`)'
+        - 'traefik.http.services.zoneminder3.loadbalancer.server.port=80'
     depends_on:
       - db
     networks:
