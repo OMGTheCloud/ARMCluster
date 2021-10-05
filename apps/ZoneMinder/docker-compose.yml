@@ -7,17 +7,36 @@ volumes:
       type: nfs
       o: addr=rockpiNAS,nolock,soft,rw
       device: :/export/DockerNFS/docker-volumes/zoneminder-data
-      
-  zoneminder-config:
+  
+  zoneminder-db:
+    external: true
+
+#zoneminder 1 vols    
+  zoneminder-config1:
     driver: glusterfs
     name: "gfs/zoneminder-config"
     
-  zoneminder-log:
+  zoneminder-log1:
     driver: glusterfs
     name: "gfs/zoneminder-log"
+ 
+ #zoneminder 2 vols    
+  zoneminder-config2:
+    driver: glusterfs
+    name: "gfs/zoneminder-config2"
     
-  zoneminder-db:
-    external: true
+  zoneminder-log2:
+    driver: glusterfs
+    name: "gfs/zoneminder-log2"
+    
+ #zoneminder 3 vols    
+  zoneminder-config3:
+    driver: glusterfs
+    name: "gfs/zoneminder-config3"
+    
+  zoneminder-log1:
+    driver: glusterfs
+    name: "gfs/zoneminder-log3"
     
 networks:
   proxy:
@@ -48,7 +67,7 @@ services:
       - MYSQL_USER=zm
       - TZ=America/Phoenix
 
-  zoneminder:
+  zoneminder1:
     image: ghcr.io/zoneminder-containers/zoneminder-base:latest
     deploy:
       mode: replicated
@@ -68,18 +87,88 @@ services:
     networks:
       - zoneminder
       - proxy
-    ports:
-      - "8099:80"
     volumes:
       - zoneminder-data:/data
-      - zoneminder-config:/config
-      - zoneminder-log:/log
+      - zoneminder-config1:/config
+      - zoneminder-log1:/log
       - type: tmpfs
         target: /dev/shm
 #        tmpfs:
 #          size: 1000000000
     environment:
-      - ZM_SERVER_HOST=zm
+      - ZM_SERVER_HOST=zm1.arm.omgthecloud.com
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=zm
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=America/Phoenix
+      - MAX_LOG_SIZE_BYTES=1000000
+      - MAX_LOG_NUMBER=20
+#      - EMAIL_HOST=smtp.gmail.com
+#      - EMAIL_PORT=587
+#      - EMAIL_ADDRESS=zoneminder@omgthecloud.com
+#      - EMAIL_PASSWORD=very_secure_password
+
+  zoneminder2:
+    image: ghcr.io/zoneminder-containers/zoneminder-base:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    depends_on:
+      - db
+    networks:
+      - zoneminder
+    volumes:
+      - zoneminder-data:/data
+      - zoneminder-config2:/config
+      - zoneminder-log2:/log
+      - type: tmpfs
+        target: /dev/shm
+#        tmpfs:
+#          size: 1000000000
+    environment:
+      - ZM_SERVER_HOST=zoneminder2
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=zm
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=America/Phoenix
+      - MAX_LOG_SIZE_BYTES=1000000
+      - MAX_LOG_NUMBER=20
+#      - EMAIL_HOST=smtp.gmail.com
+#      - EMAIL_PORT=587
+#      - EMAIL_ADDRESS=zoneminder@omgthecloud.com
+#      - EMAIL_PASSWORD=very_secure_password
+
+  zoneminder3:
+    image: ghcr.io/zoneminder-containers/zoneminder-base:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    depends_on:
+      - db
+    networks:
+      - zoneminder
+    volumes:
+      - zoneminder-data:/data
+      - zoneminder-config3:/config
+      - zoneminder-log3:/log
+      - type: tmpfs
+        target: /dev/shm
+#        tmpfs:
+#          size: 1000000000
+    environment:
+      - ZM_SERVER_HOST=zoneminder3
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=zm
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
